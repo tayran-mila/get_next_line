@@ -6,11 +6,15 @@
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:22:26 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/05/08 20:05:06 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/05/15 07:53:04 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+/*
+** This function returns the position of the '\n' given a pointer.
+*/
 
 static int	detect_nl(char *ptr)
 {
@@ -25,65 +29,80 @@ static int	detect_nl(char *ptr)
 		return (-1);
 }
 
+/*
+** This function concatenates two pointers *dst and *src and
+** maintaining the result in the pointer *dst.
+*/
+
 static char	*join_ptr(char *dst, char *src)
 {
-	char	*aux;
+	char	*join;
 
-	if (!(aux =(char *)malloc((ft_strlen(dst) + 1)*sizeof(char))))
+	join = dst;
+	if (!(dst = (char *)ft_strjoin(join, src)))
 		return (NULL);
-	ft_bzero(aux, ft_strlen(dst) + 1);
-	ft_memcpy(aux, dst, ft_strlen(dst));
-	free(dst);
-	if (!(dst = (char *)ft_strjoin(aux, src)))
-		return (NULL);
-	free(aux);
+	free(join);
+	join = NULL;
 	return (dst);
 }
 
+/*
+** This is an auxiliary function that presents some return conditions.
+** This function also pads the static buffer with 'ones' in the bytes 
+** that are no longer of interest. 
+*/
+
 static int	return_function(char **line, char *tmp, int k, int bytesRead)
 {
-	char	*buf;
+	int	i;
 
 	if (bytesRead == 0)
 		return (0);
-	if (!(buf =(char *)malloc((BUFFER_SIZE + 1)*sizeof(char))))
-		return (-1);
-	ft_bzero(buf, BUFFER_SIZE + 1);
 	*(tmp + k) = 0;
-	ft_memcpy(buf, tmp, (k) * sizeof(char));
-	*line = join_ptr(*line, buf);
+	i = 0;
+	while (tmp[i] == 1)
+		i++;
+	*line = join_ptr(*line, (tmp + i));
 	if (*line == NULL)
 		return (-1);
-	ft_bzero(buf, BUFFER_SIZE + 1);
-	ft_memcpy(buf, (tmp + k + 1), ft_strlen(tmp + k + 1));
-	ft_bzero(tmp, BUFFER_SIZE + 1);
-	ft_memcpy(tmp, buf, ft_strlen(buf));
-	free(buf);
+	while (i <= k)
+	{
+		tmp[i] = 1;
+		i++;
+	}
 	return (1);
 }
 
+/*
+** This is the principal function of the program. It allocates
+** the static buffer, *buffer, initializes it and if no '\n'
+** is found inside the buffer, it concatenates the results. 
+*/
+
 int 		get_next_line(int fd, char **line)
 {
-	static char	*tmp;
+	static char	*buffer[MAX_FD];
 	int k;
 	int	bytesRead;
 
+	if (fd > MAX_FD)
+		return (-1);
 	bytesRead = 1;
-	if(tmp == 0)
+	if (buffer[fd] == 0)
 	{
-		if (!(tmp =(char *)malloc((BUFFER_SIZE + 1)*sizeof(char))))
+		if (!(buffer[fd] = (char *)malloc((BUFFER_SIZE + 1)*sizeof(char))))
 			return (-1);
-		ft_bzero(tmp, BUFFER_SIZE + 1);
-		bytesRead = read(fd, tmp, BUFFER_SIZE);
+		ft_bzero(buffer[fd], (BUFFER_SIZE + 1));
+		bytesRead = read(fd, buffer[fd], BUFFER_SIZE);
 	}
 	*line = ft_strdup("");
-	k = detect_nl(tmp);
+	k = detect_nl(buffer[fd]);
 	while (k == -1 && bytesRead > 0)
 	{
-		*line = join_ptr(*line, tmp);
-		ft_bzero(tmp, BUFFER_SIZE + 1);
-		bytesRead = read(fd, tmp, BUFFER_SIZE);
-		k = detect_nl(tmp);
+		*line = join_ptr(*line, buffer[fd]);
+		ft_bzero(buffer[fd], BUFFER_SIZE + 1);
+		bytesRead = read(fd, buffer[fd], BUFFER_SIZE);
+		k = detect_nl(buffer[fd]);
 	}
-	return ( return_function(line, tmp, k, bytesRead) );
+	return (return_function(line, buffer[fd], k, bytesRead));
 }

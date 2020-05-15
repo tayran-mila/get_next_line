@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/06 13:22:20 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/05/07 16:38:48 by tmendes-         ###   ########.fr       */
+/*   Created: 2020/05/11 13:43:01 by tmendes-          #+#    #+#             */
+/*   Updated: 2020/05/15 07:52:45 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ unsigned long	ft_strlen(const char *s)
 	return (k);
 }
 
-char			*ft_strjoin(char const *s1, char const *s2)
+char			*ft_strjoin(const char *s1, const char *s2)
 {
 	char			*p;
 	unsigned long	len_1;
