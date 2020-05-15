@@ -6,7 +6,7 @@
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 13:43:01 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/05/15 07:52:45 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/05/15 08:54:20 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void			*ft_memcpy(void *dst, const void *src, unsigned long n)
 	return (dst);
 }
 
-char	*ft_strdup(const char *s)
+char			*ft_strdup(const char *s)
 {
 	char	*p;
 

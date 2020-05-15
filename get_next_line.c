@@ -6,7 +6,7 @@
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:22:26 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/05/15 07:53:04 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/05/15 08:40:43 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static int	detect_nl(char *ptr)
 	int	k;
 
 	k = 0;
-	while(*(ptr + k) != '\n' && *(ptr + k) != 0)
+	while (*(ptr + k) != '\n' && *(ptr + k) != 0)
 		k++;
-	if(*(ptr + k) == '\n')
+	if (*(ptr + k) == '\n')
 		return (k);
 	else
 		return (-1);
@@ -48,15 +48,15 @@ static char	*join_ptr(char *dst, char *src)
 
 /*
 ** This is an auxiliary function that presents some return conditions.
-** This function also pads the static buffer with 'ones' in the bytes 
-** that are no longer of interest. 
+** This function also pads the static buffer with 'ones' in the bytes
+** that are no longer of interest.
 */
 
-static int	return_function(char **line, char *tmp, int k, int bytesRead)
+static int	return_function(char **line, char *tmp, int k, int bytesread)
 {
 	int	i;
 
-	if (bytesRead == 0)
+	if (bytesread == 0)
 		return (0);
 	*(tmp + k) = 0;
 	i = 0;
@@ -76,33 +76,33 @@ static int	return_function(char **line, char *tmp, int k, int bytesRead)
 /*
 ** This is the principal function of the program. It allocates
 ** the static buffer, *buffer, initializes it and if no '\n'
-** is found inside the buffer, it concatenates the results. 
+** is found inside the buffer, it concatenates the results.
 */
 
-int 		get_next_line(int fd, char **line)
+int			get_next_line(int fd, char **line)
 {
 	static char	*buffer[MAX_FD];
-	int k;
-	int	bytesRead;
+	int			k;
+	int			bytesread;
 
 	if (fd > MAX_FD)
 		return (-1);
-	bytesRead = 1;
+	bytesread = 1;
 	if (buffer[fd] == 0)
 	{
-		if (!(buffer[fd] = (char *)malloc((BUFFER_SIZE + 1)*sizeof(char))))
+		if (!(buffer[fd] = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char))))
 			return (-1);
 		ft_bzero(buffer[fd], (BUFFER_SIZE + 1));
-		bytesRead = read(fd, buffer[fd], BUFFER_SIZE);
+		bytesread = read(fd, buffer[fd], BUFFER_SIZE);
 	}
 	*line = ft_strdup("");
 	k = detect_nl(buffer[fd]);
-	while (k == -1 && bytesRead > 0)
+	while (k == -1 && bytesread > 0)
 	{
 		*line = join_ptr(*line, buffer[fd]);
 		ft_bzero(buffer[fd], BUFFER_SIZE + 1);
-		bytesRead = read(fd, buffer[fd], BUFFER_SIZE);
+		bytesread = read(fd, buffer[fd], BUFFER_SIZE);
 		k = detect_nl(buffer[fd]);
 	}
-	return (return_function(line, buffer[fd], k, bytesRead));
+	return (return_function(line, buffer[fd], k, bytesread));
 }
