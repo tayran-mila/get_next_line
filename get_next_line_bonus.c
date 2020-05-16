@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:22:26 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/05/15 19:05:30 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/05/15 09:02:15 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 /*
 ** This function returns the position of the '\n' given a pointer.
@@ -57,10 +57,7 @@ static int	return_function(char **line, char *tmp, int k, int bytesread)
 	int	i;
 
 	if (bytesread == 0)
-	{
-		free(tmp)
 		return (0);
-	}
 	*(tmp + k) = 0;
 	i = 0;
 	while (tmp[i] == 1)
