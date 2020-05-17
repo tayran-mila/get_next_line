@@ -6,11 +6,12 @@
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:22:26 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/05/15 19:05:30 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/05/17 10:12:03 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 /*
 ** This function returns the position of the '\n' given a pointer.
@@ -54,25 +55,23 @@ static char	*join_ptr(char *dst, char *src)
 
 static int	return_function(char **line, char *tmp, int k, int bytesread)
 {
-	int	i;
+	char	*aux;
 
-	if (bytesread == 0)
-	{
-		free(tmp)
+	if (bytesread == 0 && ft_strlen(*line) == 0)
 		return (0);
-	}
+	if (bytesread == 0 && ft_strlen(*line) > 0)
+		return (1);
+	if (!(aux = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char))))
+		return (-1);
 	*(tmp + k) = 0;
-	i = 0;
-	while (tmp[i] == 1)
-		i++;
-	*line = join_ptr(*line, (tmp + i));
+	*line = join_ptr(*line, tmp);
 	if (*line == NULL)
 		return (-1);
-	while (i <= k)
-	{
-		tmp[i] = 1;
-		i++;
-	}
+	ft_bzero(aux, BUFFER_SIZE + 1);
+	ft_memcpy(aux, (tmp + k + 1), ft_strlen(tmp + k + 1));
+	ft_bzero(tmp, BUFFER_SIZE + 1);
+	ft_memcpy(tmp, aux, ft_strlen(aux));
+	free(aux);
 	return (1);
 }
 
