@@ -6,7 +6,7 @@
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:22:26 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/06/24 15:31:06 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/06/24 15:37:46 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int			get_next_line(int fd, char **line)
 	char		*aux;
 	int			nl;
 
-	if (fd > MX_FD || fd < 0 || !(*line = ft_strdup("")) ||
+	if (fd > MX_FD || fd < 0 || line == NULL || !(*line = ft_strdup("")) ||
 	!(buf[fd] = buf_read(fd, buf[fd], 0)))
 		return (-1);
 	while (detect_nl(buf[fd]) == -1)
