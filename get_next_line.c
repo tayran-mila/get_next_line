@@ -6,7 +6,7 @@
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:22:26 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/06/24 14:09:20 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/06/24 15:31:10 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static char	*buf_read(int fd, char *buffer, int nl)
 {
 	if (buffer == 0)
 	{
-		if (!(buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char))))
+		if (!(buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char))) ||
+		(BUFFER_SIZE == 0))
 			return (NULL);
 		ft_bzero(buffer, (BUFFER_SIZE + 1));
 		return (buffer);
@@ -47,7 +48,8 @@ static char	*buf_read(int fd, char *buffer, int nl)
 	if (nl == -1)
 	{
 		ft_bzero(buffer, (BUFFER_SIZE + 1));
-		read(fd, buffer, BUFFER_SIZE);
+		if (read(fd, buffer, BUFFER_SIZE) == -1)
+			return (NULL);
 	}
 	return (buffer);
 }
@@ -80,7 +82,8 @@ int			get_next_line(int fd, char **line)
 	char		*aux;
 	int			nl;
 
-	if (!(*line = ft_strdup("")) || !(buf = buf_read(fd, buf, 0)) || fd > MX_FD)
+	if (fd > MX_FD || fd < 0 || !(*line = ft_strdup("")) ||
+	!(buf = buf_read(fd, buf, 0)))
 		return (-1);
 	while (detect_nl(buf) == -1)
 	{
@@ -92,7 +95,8 @@ int			get_next_line(int fd, char **line)
 	nl = detect_nl(buf);
 	*(buf + nl) = 0;
 	aux = NULL;
-	if (!(*line = join_ptr(*line, buf)) || !(aux = buf_read(fd, aux, 0)))
+	if (!(*line = join_ptr(*line, buf)) ||
+	!(aux = buf_read(fd, aux, 0)))
 		return (-1);
 	ft_memcpy(aux, (buf + nl + 1), ft_strlen(buf + nl + 1));
 	ft_bzero(buf, BUFFER_SIZE + 1);

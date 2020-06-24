@@ -6,7 +6,7 @@
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:22:26 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/06/24 14:38:28 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/06/24 15:31:06 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static char	*buf_read(int fd, char *buffer, int nl)
 {
 	if (buffer == 0)
 	{
-		if (!(buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char))))
+		if (!(buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char))) ||
+		(BUFFER_SIZE == 0))
 			return (NULL);
 		ft_bzero(buffer, (BUFFER_SIZE + 1));
 		return (buffer);
@@ -47,7 +48,8 @@ static char	*buf_read(int fd, char *buffer, int nl)
 	if (nl == -1)
 	{
 		ft_bzero(buffer, (BUFFER_SIZE + 1));
-		read(fd, buffer, BUFFER_SIZE);
+		if (read(fd, buffer, BUFFER_SIZE) == -1)
+			return (NULL);
 	}
 	return (buffer);
 }
