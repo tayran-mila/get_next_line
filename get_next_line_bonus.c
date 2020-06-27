@@ -6,7 +6,7 @@
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:22:26 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/06/26 07:38:26 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/06/27 09:48:28 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,10 @@ static char	*buffer_shift(char *buffer, int nl)
 
 int			get_next_line(int fd, char **line)
 {
-	static char	*buf[MX_FD];
+	static char	*buf[MAX_FD];
 	int			nl;
 
-	if (fd > MX_FD || fd < 0 || line == NULL || !(*line = ft_strdup("")) ||
+	if (fd > MAX_FD || fd < 0 || line == NULL || !(*line = ft_strdup("")) ||
 	!(buf[fd] = buf_read(fd, buf[fd], 0)))
 		return (-1);
 	while (detect_nl(buf[fd]) == -1)

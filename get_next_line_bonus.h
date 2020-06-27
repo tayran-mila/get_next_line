@@ -6,7 +6,7 @@
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:22:31 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/06/26 08:02:42 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/06/27 09:48:31 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-# define MX_FD 1024
+# define MAX_FD 1024
 
 unsigned long	ft_strlen(const char *s);
 char			*ft_strjoin(const char *s1, const char *s2);
