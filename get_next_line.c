@@ -6,7 +6,7 @@
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:22:26 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/06/27 09:48:33 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/06/27 16:24:22 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,21 @@ static int	detect_nl(char *ptr)
 
 static char	*buf_read(int fd, char *buffer, int nl)
 {
+	int	bytes;
+
 	if (buffer == 0)
 	{
 		if (!(buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char))) ||
 		(BUFFER_SIZE == 0))
 			return (NULL);
-		ft_bzero(buffer, (BUFFER_SIZE + 1));
-		return (buffer);
+		*buffer = 0;
 	}
 	if (nl == -1)
 	{
-		ft_bzero(buffer, (BUFFER_SIZE + 1));
-		if (read(fd, buffer, BUFFER_SIZE) == -1)
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (bytes == -1)
 			return (NULL);
+		*(buffer + bytes) = 0;
 	}
 	return (buffer);
 }
@@ -72,25 +74,6 @@ static char	*join_ptr(char *dst, char *src)
 }
 
 /*
-** This function shifts the buffer after a newline is found.
-*/
-
-static char	*buffer_shift(char *buffer, int nl)
-{
-	char	*aux;
-
-	if (!(aux = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char))))
-		return (NULL);
-	ft_bzero(aux, (BUFFER_SIZE + 1));
-	ft_memcpy(aux, (buffer + nl + 1), ft_strlen(buffer + nl + 1));
-	ft_bzero(buffer, BUFFER_SIZE + 1);
-	ft_memcpy(buffer, aux, ft_strlen(aux));
-	free(aux);
-	aux = NULL;
-	return (buffer);
-}
-
-/*
 ** This function returns a line read from a file descriptor,
 ** without the newline.
 */
@@ -100,8 +83,8 @@ int			get_next_line(int fd, char **line)
 	static char	*buf;
 	int			nl;
 
-	if (fd > MAX_FD || fd < 0 || line == NULL || !(*line = ft_strdup("")) ||
-	!(buf = buf_read(fd, buf, 0)))
+	if (fd > MAX_FD || fd < 0 || !(buf = buf_read(fd, buf, 0)) ||
+	line == NULL || !(*line = ft_strdup("")))
 		return (-1);
 	while (detect_nl(buf) == -1)
 	{
@@ -118,7 +101,8 @@ int			get_next_line(int fd, char **line)
 	nl = detect_nl(buf);
 	*(buf + nl) = 0;
 	if (!(*line = join_ptr(*line, buf)) ||
-	!(buf = buffer_shift(buf, nl)))
+	!(buf = ft_memmove(buf, (buf + nl + 1),
+	ft_strlen(buf + nl + 1) + 1)))
 		return (-1);
 	return (1);
 }
