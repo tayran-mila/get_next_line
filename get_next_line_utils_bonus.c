@@ -6,7 +6,7 @@
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 13:43:01 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/05/15 09:02:47 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/06/28 06:16:20 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,20 @@ char			*ft_strjoin(const char *s1, const char *s2)
 	return (p);
 }
 
-void			*ft_memcpy(void *dst, const void *src, unsigned long n)
+void			*ft_memmove(void *dst, const void *src, size_t len)
 {
 	unsigned long	k;
 
 	k = 0;
 	if (dst == NULL && src == NULL)
 		return (NULL);
-	while (k < n)
+	while (k < len)
 	{
-		*((unsigned char *)dst + k) =
-		(unsigned char)*((char *)src + k);
+		if (src >= dst)
+			*((char *)dst + k) = (unsigned char)*((char *)src + k);
+		else
+			*((char *)dst + len - k - 1) =
+			(unsigned char)*((char *)src + len - k - 1);
 		k++;
 	}
 	return (dst);
@@ -74,18 +77,6 @@ char			*ft_strdup(const char *s)
 
 	if (!(p = (char *)malloc((ft_strlen(s) + 1))))
 		return (NULL);
-	p = (char *)ft_memcpy(p, s, (ft_strlen(s) + 1));
+	p = (char *)ft_memmove(p, s, (ft_strlen(s) + 1));
 	return (p);
-}
-
-void			ft_bzero(void *s, unsigned long n)
-{
-	unsigned long	k;
-
-	k = 0;
-	while (k < n)
-	{
-		*((char *)s + k) = (unsigned char)0;
-		k++;
-	}
 }

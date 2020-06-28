@@ -6,7 +6,7 @@
 /*   By: tmendes- <tmendes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 13:22:31 by tmendes-          #+#    #+#             */
-/*   Updated: 2020/06/27 09:48:31 by tmendes-         ###   ########.fr       */
+/*   Updated: 2020/06/28 06:15:02 by tmendes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@
 
 unsigned long	ft_strlen(const char *s);
 char			*ft_strjoin(const char *s1, const char *s2);
-void			*ft_memcpy(void *dst, const void *src, size_t n);
+void			*ft_memmove(void *dst, const void *src, size_t len);
 char			*ft_strdup(const char *s);
-void			ft_bzero(void *s, size_t n);
 int				get_next_line(int fd, char **line);
 
 #endif
